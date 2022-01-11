@@ -1,0 +1,871 @@
+########################################
+## Setup Config
+########################################
+
+esphome:
+  name: waveshare-eink
+
+esp32:
+  board: lolin_d32
+  framework:
+    type: arduino
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+
+ota:
+  password: !secret eink_ota_password
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Waveshare-Eink_pw=fallback"
+    password: "fallback"
+
+captive_portal:
+
+time:
+  - platform: homeassistant
+    id: esptime
+
+spi:
+  clk_pin: 18
+  mosi_pin: 23
+
+graph:
+  - id: graph_power
+    sensor: iotawatt_total_watts
+    height: 50
+    width: 120
+    duration: 2h
+    min_value: 0
+    x_grid: 15min
+    y_grid: 500
+
+########################################
+## Text Sensors
+########################################
+
+text_sensor:
+  - platform: homeassistant
+    id: alarm_state
+    entity_id: alarm_control_panel.home_alarm
+    internal: true
+    
+  - platform: homeassistant
+    id: weather
+    entity_id: weather.home
+    internal: true
+    
+  - platform: wifi_info
+    ip_address:
+      id: esp_ip_address
+      internal: true
+    ssid:
+      id: esp_ssid
+      internal: true
+    mac_address:
+      id: esp_mac_address
+      internal: true
+
+########################################
+## Sensors
+########################################
+sensor:
+  - platform: homeassistant
+    id: weather_temp
+    entity_id: sensor.weather_temp
+    internal: true
+    
+  - platform: homeassistant
+    id: forecast_precipitation
+    entity_id: sensor.weather_forecast_precipitation
+    internal: true
+    
+  - platform: homeassistant
+    id: forecast_temphigh
+    entity_id: sensor.weather_forecast_temphi
+    internal: true
+  
+  - platform: homeassistant
+    id: forecast_templo
+    entity_id: sensor.weather_forecast_templo
+    internal: true
+  
+  - platform: homeassistant
+    id: forecast_windbearing
+    entity_id: sensor.weather_forecast_wind_bearing
+    internal: true
+  
+  - platform: homeassistant
+    id: forecast_windspeed
+    entity_id: sensor.weather_forecast_wind_speed
+    internal: true
+    
+    
+  - platform: homeassistant
+    id: thermostat_temp
+    entity_id: sensor.my_ecobee_temperature
+    internal: true
+    
+  - platform: homeassistant
+    id: thermostat_humidity
+    entity_id: sensor.my_ecobee_humidity
+    internal: true
+    
+  - platform: homeassistant
+    id: livingroom_temp
+    entity_id: sensor.living_room_ecobee_sensor_temperature
+    internal: true
+    
+  - platform: homeassistant
+    id: basement_temp
+    entity_id: sensor.basement_ecobee_sensor_temperature
+    internal: true
+    
+  - platform: homeassistant
+    id: bedroom_temp
+    entity_id: sensor.bedroom_ecobee_sensor_temperature
+    internal: true
+    
+  - platform: homeassistant
+    id: garage_temp
+    entity_id: sensor.motion_garage_temperature
+    internal: true
+  
+  - platform: homeassistant
+    id: enviro_pm1
+    entity_id: sensor.enviro_pm1
+    internal: true
+    
+  - platform: homeassistant
+    id: enviro_pm2
+    entity_id: sensor.enviro_pm2
+    internal: true
+    
+  - platform: homeassistant
+    id: enviro_pm10
+    entity_id: sensor.enviro_pm10
+    internal: true
+  
+  - platform: homeassistant
+    id: enviro_nh3
+    entity_id: sensor.enviro_nh3
+    internal: true
+    
+  - platform: homeassistant
+    id: enviro_oxidized
+    entity_id: sensor.enviro_oxidised
+    internal: true
+    
+  - platform: homeassistant
+    id: enviro_reduced
+    entity_id: sensor.enviro_reduced
+    internal: true
+  
+  - platform: homeassistant
+    id: iotawatt_vref
+    entity_id: sensor.voltageref
+    internal: true
+    
+  - platform: homeassistant
+    id: iotawatt_L1_watts
+    entity_id: sensor.main_l1
+    internal: true
+    
+  - platform: homeassistant
+    id: iotawatt_L2_watts
+    entity_id: sensor.main_l2
+    internal: true
+    
+  - platform: homeassistant
+    id: iotawatt_total_watts
+    entity_id: sensor.power_main_wattage
+    internal: true
+    
+  - platform: homeassistant
+    id: speedtest_download
+    entity_id: sensor.speedtest_download
+    internal: true
+    
+  - platform: homeassistant
+    id: speedtest_upload
+    entity_id: sensor.speedtest_upload
+    internal: true
+  
+  - platform: homeassistant
+    id: speedtest_ping
+    entity_id: sensor.speedtest_ping
+    internal: true
+  
+  - platform: wifi_signal
+    id: wifi_signal_strength
+    update_interval: 60s
+    internal: true
+    
+  - platform: uptime
+    id: esp_uptime
+    update_interval: 30s # defaults to 60s
+    internal: true
+
+########################################
+## Fonts
+########################################
+font:
+  - file: 'fonts/Google_Sans_Bold.ttf'
+    id: clock_font
+    size: 90
+    glyphs: [0, 1, 2, 3, 4, 5, 6, 7 ,8, 9, ':']
+    
+  - file: 'fonts/Google_Sans_Regular.ttf'
+    id: font_temp
+    size: 32
+    glyphs:
+      ['&', '@', '!', ',', '.', '"', '%', '(', ')', '+', '-', '_', ':', '°', '0',
+      '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E',
+      'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
+      'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', 'a', 'b', 'c', 'd', 'e', 'f',
+      'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+      'u', 'v', 'w', 'x', 'y', 'z', '/']
+  
+  - file: 'fonts/Google_Sans_Bold.ttf'
+    id: font_subscript
+    size: 16
+    glyphs:
+      ['&', '@', '!', ',', '.', '"', '%', '(', ')', '+', '-', '_', ':', '°', '0',
+      '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E',
+      'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
+      'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', 'a', 'b', 'c', 'd', 'e', 'f',
+      'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+      'u', 'v', 'w', 'x', 'y', 'z', '/'
+      ]
+
+  - file: 'fonts/Google_Sans_Bold.ttf'
+    id: font_status
+    size: 22
+    glyphs:
+      ['&', '@', '!', ',', '.', '"', '%', '(', ')', '+', '-', '_', ':', '°', '0',
+      '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E',
+      'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
+      'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', 'a', 'b', 'c', 'd', 'e', 'f',
+      'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+      'u', 'v', 'w', 'x', 'y', 'z', '/']
+  
+  - file: 'fonts/Google_Sans_Bold.ttf'
+    id: font_header
+    size: 22
+    glyphs:
+      ['&', '@', '!', ',', '.', '"', '%', '(', ')', '+', '-', '_', ':', '°', '0',
+      '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E',
+      'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
+      'T', 'U', 'V', 'W', 'X', 'Y', 'Z', ' ', 'a', 'b', 'c', 'd', 'e', 'f',
+      'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+      'u', 'v', 'w', 'x', 'y', 'z', '/']
+
+########################################
+## Icons
+########################################
+
+  - file: 'fonts/mdi.ttf' 
+    id: font_wifi
+    size: 32
+    glyphs: [
+      # Wifi
+      "\U000F091F", # mdi-wifi-strength-1
+      "\U000F0922", # mdi-wifi-strength-2
+      "\U000F0925", # mdi-wifi-strength-3
+      "\U000F0928", # mdi-wifi-strength-4
+      "\U000F092B", # mdi-wifi-strength-alert-outline
+      "\U000F05AA", # mdi-wifi-off
+      ]
+      
+  - file: 'fonts/mdi.ttf' 
+    id: icon_speedtest
+    size: 32
+    glyphs: [
+      # Wifi
+      "\U000F0B7D", # mdi-cloud-download-outline
+      "\U000F0B7E", # mdi-cloud-upload-outline
+      "\U000F0152", # mdi-clock-fast
+      
+      ]
+      
+  - file: 'fonts/mdi.ttf' 
+    id: icon_environment
+    size: 32
+    glyphs: [
+      # Wifi
+      "\U000F0393", # mdi-thermostat-box
+      "\U000F058E", # mdi-water-percent
+      "\U000F02E3", # mdi-bed           Bedroom
+      "\U000F12BE", # mdi-stairs-down   Basement
+      "\U000F0502", # mdi-television    Living Room
+      "\U000F12D3", # mdi-garage-variant
+      ]  
+  
+  - file: 'fonts/mdi.ttf'
+    id: icon_alarm
+    size: 56
+    glyphs: [
+      "\U000F078F", # mdi-alarm-light
+      "\U000F0BEA", # mdi-alarm-light-outline
+      "\U000F0237", # mdi-fingerprint
+      "\U000F0EB1", # mdi-fingerprint-off
+      "\U000F0498", # mdi-shield                 armed_away
+      "\U000F0499", # mdi-shield-outline
+      "\U000F088F", # mdi-shield-account         armed_home
+      "\U000F0A12", # mdi-shield-account-outline
+      "\U000F0ECD", # mdi-shield-alert-outline
+      "\U000F0565", # mdi-shield-check        pending
+      "\U000F0CC8", # mdi-shield-check-outline
+      "\U000F0780", # mdi-shield-half-full        armed_night
+      "\U000F0BC4", # mdi-shield-key              arming
+      "\U000F0BC5", # mdi-shield-key-outline
+      "\U000F099E", # mdi-shield-off            disarmed
+      "\U000F033F", # mdi-lock-open            pending
+      "\U000F0340", # mdi-lock-open-outline    disarming
+      "\U000F139C", # mdi-lock-check           triggered
+      "\U000F0FC5", # mdi-location-exit       armed_custom_bypass
+      "\U000F009E", # mdi-bell-ring         bell
+      "\U000F009F", # mdi-bell-ring-outline
+      ]
+  - file: 'fonts/mdi.ttf'
+    id: icon_power
+    size: 28
+    glyphs: [
+      "\U000F1904", # mdi-home-lightning-bolt-outline
+      ]
+      
+  - file: 'fonts/mdi.ttf'
+    id: icon_weather
+    size: 100
+    glyphs: [
+      "\U000F0590", # mdi-weather-cloudy
+      "\U000F0F2F", # mdi-weather-cloudy-alert
+      "\U000F0E6E", # mdi-weather-cloudy-arrow-right
+      "\U000F0591", # mdi-weather-fog
+      "\U000F0592", # mdi-weather-hail
+      "\U000F0F30", # mdi-weather-hazy
+      "\U000F0898", # mdi-weather-hurricane
+      "\U000F0593", # mdi-weather-lightning
+      "\U000F067E", # mdi-weather-lightning-rainy
+      "\U000F0594", # mdi-weather-night
+      "\U000F0F31", # mdi-weather-night-partly-cloudy
+      "\U000F0595", # mdi-weather-partly-cloudy
+      "\U000F0F32", # mdi-weather-partly-lightning
+      "\U000F0F33", # mdi-weather-partly-rainy
+      "\U000F0F34", # mdi-weather-partly-snowy
+      "\U000F0F35", # mdi-weather-partly-snowy-rainy
+      "\U000F0596", # mdi-weather-pouring
+      "\U000F0597", # mdi-weather-rainy
+      "\U000F0598", # mdi-weather-snowy
+      "\U000F0F36", # mdi-weather-snowy-heavy
+      "\U000F067F", # mdi-weather-snowy-rainy
+      "\U000F0599", # mdi-weather-sunny
+      "\U000F0F37", # mdi-weather-sunny-alert
+      "\U000F14E4", # mdi-weather-sunny-off
+      "\U000F059A", # mdi-weather-sunset
+      "\U000F059B", # mdi-weather-sunset-down
+      "\U000F059C", # mdi-weather-sunset-up
+      "\U000F0F38", # mdi-weather-tornado
+      "\U000F059D", # mdi-weather-windy
+      "\U000F059E", # mdi-weather-windy-variant
+      ]
+      
+  - file: 'fonts/mdi.ttf'
+    id: icon_forecast
+    size: 32
+    glyphs: [
+      "\U000F0E03", # mdi-thermometer-chevron-up
+      "\U000F0E02", # mdi-thermometer-chevron-up
+      "\U000F0596", # mdi-weather-pouring
+      "\U000F059D", # mdi-weather-windy
+      "\U000F1382", # mdi-compass-rose
+      "\U000F058E", # mdi-water-percent
+      ]
+      
+
+########################################
+## Display
+########################################
+display:
+  - platform: waveshare_epaper
+    cs_pin: 5
+    dc_pin: 4
+    busy_pin: 16
+    reset_pin: 17
+    model: 4.20in-bV2
+    update_interval: 5min
+    lambda: |-
+    
+      ESP_LOGI("display", "Updating display..");
+      int x, y, c;
+      
+      ESP_LOGI("icons", "Mapping Icons..");
+      std::map<std::string, std::string> weather_icon_map
+      {
+        {"clear-night", "\U000F0594"},
+        {"cloudy", "\U000F0590"},
+        {"fog", "\U000F0591"},
+        {"hail", "\U000F0592"},
+        {"lightning", "\U000F0593"},
+        {"lightning-rainy", "\U000F067E"},
+        {"partlycloudy", "\U000F0595"},
+        {"pouring", "\U000F0596"},
+        {"rainy", "\U000F0597"},
+        {"snowy", "\U000F0598"},
+        {"snowy-rainy", "\U000F067F"},
+        {"sunny", "\U000F0599"},
+        {"windy", "\U000F059D"},
+        {"windy-variant", "\U000F059E"},
+        {"exceptional", "\U000F0599"},
+        {"hazy", "\U000F0F30"},
+        {"hurricane", "\U000F0898"},
+        {"night-partly-cloudy", "\U000F0F31"},
+        {"partly-cloudy", "\U000F0595"},
+        {"partly-lightning", "\U000F0F32"},
+        {"partly-rainy", "\U000F0F33"},
+        {"partly-snowy", "\U000F0F34"},
+        {"partly-snowy-rainy", "\U000F0F35"},
+        {"snowy-heavy", "\U000F0F36"},
+        {"sunny-alert", "\U000F0F37"},
+        {"sunny-off", "\U000F14E4"},
+        {"sunset", "\U000F059A"},
+        {"sunset-down", "\U000F059B"},
+        {"sunset-up", "\U000F059C"},
+        {"tornado", "\U000F0F38"},
+      };
+      
+      std::map<std::string, std::string> alarm_icon_map
+      {
+        {"disarmed", "\U000F099E"},
+        {"armed_home", "\U000F088F"},
+        {"armed_away", "\U000F0498"},
+        {"armed_night", "\U000F0780"},
+        {"armed_custom_bypass", "\U000F0FC5"},
+        {"pending", "\U000F0565"},
+        {"arming", "\U000F0BC4"},
+        {"disarming", "\U000F0340"},
+        {"triggered", "\U000F139C"},
+      };
+
+      ////////////////////////////////////////
+      // Print alignment help 
+      ////////////////////////////////////////
+
+      ESP_LOGI("display", "Writing Helper line labels..");
+      //it.printf(0, 0, id(font_subscript), TextAlign::TOP_LEFT, "0");
+      //it.printf(0, 50, id(font_subscript), TextAlign::TOP_LEFT, "50");
+      //it.printf(0, 100, id(font_subscript), TextAlign::TOP_LEFT, "100");
+      //it.printf(0, 150, id(font_subscript), TextAlign::TOP_LEFT, "150");
+      //it.printf(0, 200, id(font_subscript), TextAlign::TOP_LEFT, "200");
+      //it.printf(0, 250, id(font_subscript), TextAlign::TOP_LEFT, "250");
+      
+      //it.printf(50, 0, id(font_subscript), TextAlign::TOP_LEFT, "50");
+      //it.printf(100, 0, id(font_subscript), TextAlign::TOP_LEFT, "100");
+      //it.printf(150, 0, id(font_subscript), TextAlign::TOP_LEFT, "150");
+      //it.printf(200, 0, id(font_subscript), TextAlign::TOP_LEFT, "200");
+      //it.printf(250, 0, id(font_subscript), TextAlign::TOP_LEFT, "250");
+      //it.printf(300, 0, id(font_subscript), TextAlign::TOP_LEFT, "300");
+      //it.printf(350, 0, id(font_subscript), TextAlign::TOP_LEFT, "350");
+      
+      
+      // horizontal lines
+      //ESP_LOGI("display", "Drawing horizontal lines..");
+      //it.line(0, 50, 400, 50);
+      //it.line(0, 100, 400, 100);
+      //it.line(0, 150, 400, 150);
+      //it.line(0, 200, 400, 200);
+      //it.line(0, 250, 400, 250);
+      //it.line(0, 50, 250, 50);
+      //it.line(0, 100, 250, 100);
+      
+      // vertical lines
+      //ESP_LOGI("display", "Drawing vertical lines..");
+      //it.line(50, 0, 50, 250);
+      //it.line(100, 0, 100, 300);
+      //it.line(150, 0, 150, 300);
+      //it.line(200, 0, 200, 300);
+      //it.line(250, 0, 250, 300);
+      //it.line(300, 0, 300, 300);
+      //it.line(350, 0, 350, 300);
+      
+      
+      ////////////////////////////////////////
+      // Weather
+      ////////////////////////////////////////
+
+      int weather_xspace = 85;
+      int weather_yspace = 35;
+      int weather_xcol1 = 100;
+      int weather_xcol2 = weather_xcol1 + weather_xspace;
+      int weather_yrow1 = 25;
+      int weather_yrow2 = weather_yrow1 + weather_yspace;
+      int weather_yrow3 = weather_yrow2 + weather_yspace;
+      
+      ESP_LOGI("display", "Weather data..");
+      it.printf(175, 0, id(font_header), TextAlign::TOP_CENTER, "Weather");
+      
+      // current temp
+      x = 50; y = 100;
+      if (id(weather_temp).has_state()) {
+        it.printf(x, y, id(font_header), TextAlign::TOP_CENTER, "%.0f°F", id(weather_temp).state);
+      } else {
+        it.printf(x, y, id(font_header), TextAlign::TOP_CENTER, "N/A");
+      }
+      
+      
+      // weather icon
+      x = 50; y = 50;
+      if (id(weather).has_state()) {
+        it.printf(x, y, id(icon_weather), TextAlign::CENTER, weather_icon_map[id(weather).state.c_str()].c_str());
+      } else {
+        it.printf(x, y, id(icon_weather), TextAlign::CENTER, "\U000F0F2F");
+      }
+      
+      // Temp Hi
+      x = weather_xcol1; y = weather_yrow1;
+      it.printf(x, y + 20, id(icon_forecast), TextAlign::CENTER_LEFT, "\U000F0E03");
+      it.printf(x + 60 , y + 20, id(font_subscript), TextAlign::TOP_CENTER, "°F");
+      if (id(forecast_temphigh).has_state()) {
+        it.printf(x + 60, y, id(font_status), TextAlign::TOP_CENTER , "%.0f", id(forecast_temphigh).state);
+      } else {
+        it.printf(x + 60, y, id(font_status), TextAlign::TOP_CENTER , "N/A");
+      }
+      
+      // Temp Lo
+      x = weather_xcol1; y = weather_yrow2;
+      it.printf(x, y + 20, id(icon_forecast), TextAlign::CENTER_LEFT, "\U000F0E02");
+      it.printf(x + 60 , y + 20, id(font_subscript), TextAlign::TOP_CENTER, "°F");
+      if (id(forecast_templo).has_state()) {
+        it.printf(x + 60, y, id(font_status), TextAlign::TOP_CENTER , "%.0f", id(forecast_templo).state);
+      } else {
+        it.printf(x + 60, y, id(font_status), TextAlign::TOP_CENTER , "N/A");
+      }
+      
+      // Precip
+      x = weather_xcol1; y = weather_yrow3;
+      it.printf(x, y + 20, id(icon_forecast), TextAlign::CENTER_LEFT, "\U000F0596");
+      it.printf(x + 60 , y + 20, id(font_subscript), TextAlign::TOP_CENTER, "inches");
+      if (id(forecast_precipitation).has_state()) {
+        it.printf(x + 60, y, id(font_status), TextAlign::TOP_CENTER , "%.2f", id(forecast_precipitation).state);
+      } else {
+        it.printf(x + 60, y, id(font_status), TextAlign::TOP_CENTER , "N/A");
+      }
+      
+      // Wind Speed
+      x = weather_xcol2; y = weather_yrow1;
+      it.printf(x, y + 20, id(icon_forecast), TextAlign::CENTER_LEFT, "\U000F059D");
+      it.printf(x + 60 , y + 20, id(font_subscript), TextAlign::TOP_CENTER, "mph");
+      if (id(forecast_windspeed).has_state()) {
+        it.printf(x + 60, y, id(font_status), TextAlign::TOP_CENTER , "%.0f", id(forecast_windspeed).state);
+      } else {
+        it.printf(x + 60, y, id(font_status), TextAlign::TOP_CENTER , "N/A");
+      }
+      
+      // Wind bearing
+      x = weather_xcol2; y = weather_yrow2;
+      it.printf(x, y + 20, id(icon_forecast), TextAlign::CENTER_LEFT, "\U000F1382");
+      
+      std::string sDirection = "XXX";
+      
+      if (id(forecast_windbearing).has_state()) {
+        float dir = id(forecast_windbearing).state;
+        if ( dir >= 0 && dir <= 11.25) {
+          sDirection = "N";
+        } else if ( dir > 11.25 && dir < 33.75) {
+          sDirection = "NNE";
+        } else if ( dir >= 33.75 && dir <= 56.25) {
+          sDirection = "NE";
+        } else if ( dir > 56.25 && dir < 78.75) {
+          sDirection = "ENE";
+        } else if (dir >= 78.75 && dir <= 101.25) {
+          sDirection = "E";
+        } else if ( dir > 101.25 && dir < 123.75) {
+          sDirection = "ESE";
+        } else if (dir >= 123.75 && dir <= 146.25) {
+          sDirection = "SE";
+        } else if ( dir > 146.25 && dir < 168.75) {
+          sDirection = "SSE";
+        } else if (dir >= 168.75 && dir <= 191.25) {
+          sDirection = "S";
+        } else if ( dir > 191.25 && dir < 213.75) {
+          sDirection = "SSW";
+        } else if (dir >= 213.75 && dir <= 236.25) {
+          sDirection = "SW";
+        } else if ( dir > 236.25 && dir < 258.75) {
+          sDirection = "WSW";
+        } else if (dir >= 258.75 && dir <= 281.25) {
+          sDirection = "W";
+        } else if ( dir > 281.25 && dir < 303.75) {
+          sDirection = "WNW";
+        } else if (dir >= 303.75 && dir <= 326.25) {
+          sDirection = "NW";
+        } else if ( dir > 326.25 && dir < 348.75) {
+          sDirection = "NNW";
+        } else if (dir >= 348.75 && dir <= 360) {
+          sDirection = "N";
+        } else {
+          sDirection = "N/A";
+        }
+      
+        it.printf(x + 60, y, id(font_status), TextAlign::TOP_CENTER , sDirection.c_str());
+        it.printf(x + 60 , y + 20, id(font_subscript), TextAlign::TOP_CENTER, "%.0f°", id(forecast_windbearing).state);
+      } else {
+        it.printf(x + 60, y, id(font_status), TextAlign::TOP_CENTER , "N/A");
+      }
+
+      
+      // Precip Prob
+      //x = weather_xcol2; y = weather_yrow3;
+      //it.printf(x, y + 20, id(icon_forecast), TextAlign::CENTER_LEFT, "\U000F058E");
+      //it.printf(x + 60 , y + 20, id(font_subscript), TextAlign::TOP_CENTER, "%%");
+      //if (id(forecast_precipitation_prob).has_state()) {
+      //  it.printf(x + 60, y, id(font_status), TextAlign::TOP_CENTER , "%.0f", id(forecast_precipitation_prob).state);
+      //} else {
+      //  it.printf(x + 60, y, id(font_status), TextAlign::TOP_CENTER , "N/A");
+      //}
+      
+      
+      ////////////////////////////////////////
+      // Power
+      ////////////////////////////////////////
+      
+      ESP_LOGI("display", "Power data..");
+
+      x = 325; y = 0;
+      it.printf(x, y, id(font_header), TextAlign::TOP_CENTER, "Power");
+      it.printf(x-15, y + 25, id(icon_power), TextAlign::TOP_RIGHT, "\U000F1904");
+      if (id(iotawatt_total_watts).has_state()) {
+        it.printf(x-5, y + 25, id(font_status), TextAlign::TOP_LEFT , "%.0fW", id(iotawatt_total_watts).state);
+      } else {
+        it.printf(x-5, y + 25, id(font_status), TextAlign::TOP_LEFT , "N/A");
+      }
+      
+      y = 50;
+      it.printf(x-10, y, id(font_subscript), TextAlign::TOP_RIGHT , "L1:");
+      if (id(iotawatt_L1_watts).has_state()) {
+        it.printf(x, y, id(font_subscript), TextAlign::TOP_LEFT , "%.1fW", id(iotawatt_L1_watts).state);
+      } else {
+        it.printf(x, y, id(font_subscript), TextAlign::TOP_LEFT , "N/A");
+      }
+      
+      y = y + 15;
+      it.printf(x-10, y, id(font_subscript), TextAlign::TOP_RIGHT , "L2:");
+      if (id(iotawatt_L2_watts).has_state()) {
+        it.printf(x, y, id(font_subscript), TextAlign::TOP_LEFT , "%.1fW", id(iotawatt_L2_watts).state);
+      } else {
+        it.printf(x, y, id(font_subscript), TextAlign::TOP_LEFT , "N/A");
+      }
+      
+      x = 280; y = 85;
+      it.graph(x, y, id(graph_power));
+      
+      
+      ////////////////////////////////////////
+      // Comfort/HVAC Data 
+      ////////////////////////////////////////
+      ESP_LOGI("display", "Environment data..");
+      
+      it.printf(100, 135, id(font_header), TextAlign::TOP_CENTER, "Comfort");
+      
+      int comfort_xspace = 95;
+      int comfort_yspace = 35;
+      int comfort_xcol1 = 5;
+      int comfort_xcol2 = comfort_xcol1 + comfort_xspace;
+      int comfort_yrow1 = 155;
+      int comfort_yrow2 = comfort_yrow1 + comfort_yspace;
+      int comfort_yrow3 = comfort_yrow2 + comfort_yspace;
+      
+      // Thermostat Temp
+      x = comfort_xcol1; y = comfort_yrow1;
+      it.printf(x, y + 20, id(icon_environment), TextAlign::CENTER_LEFT, "\U000F0393");
+      it.printf(x + 60 , y + 20, id(font_subscript), TextAlign::TOP_CENTER, "°F");
+      if (id(thermostat_temp).has_state()) {
+        it.printf(x + 60, y, id(font_status), TextAlign::TOP_CENTER , "%.0f", id(thermostat_temp).state);
+      } else {
+        it.printf(x + 60, y, id(font_status), TextAlign::TOP_CENTER , "N/A");
+      }
+
+      // Bedroom Temp
+      x = comfort_xcol1; y = comfort_yrow2;
+      it.printf(x, y + 20, id(icon_environment), TextAlign::CENTER_LEFT, "\U000F02E3");
+      it.printf(x + 60 , y + 20, id(font_subscript), TextAlign::TOP_CENTER, "°F");
+      if (id(bedroom_temp).has_state()) {
+        it.printf(x + 60, y, id(font_status), TextAlign::TOP_CENTER , "%.0f", id(bedroom_temp).state);
+      } else {
+        it.printf(x + 60, y, id(font_status), TextAlign::TOP_CENTER , "N/A");
+      }
+
+      // Garage Temp
+      x = comfort_xcol1; y = comfort_yrow3;
+      it.printf(x, y + 20, id(icon_environment), TextAlign::CENTER_LEFT, "\U000F12D3");
+      it.printf(x + 60 , y + 20, id(font_subscript), TextAlign::TOP_CENTER, "°F");
+      if (id(garage_temp).has_state()) {
+        it.printf(x + 60, y, id(font_status), TextAlign::TOP_CENTER , "%.0f", id(garage_temp).state);
+      } else {
+        it.printf(x + 60, y, id(font_status), TextAlign::TOP_CENTER , "N/A");
+      }
+
+      // Thermostat Humidity
+      x = comfort_xcol2; y = comfort_yrow1;
+      it.printf(x, y + 20, id(icon_environment), TextAlign::CENTER_LEFT, "\U000F058E");
+      it.printf(x + 60 , y + 20, id(font_subscript), TextAlign::TOP_CENTER, "%%");
+      if (id(thermostat_humidity).has_state()) {
+        it.printf(x + 60, y, id(font_status), TextAlign::TOP_CENTER , "%.0f", id(thermostat_humidity).state);
+      } else {
+        it.printf(x + 60, y, id(font_status), TextAlign::TOP_CENTER , "N/A");
+      }
+      
+      // Living Temp
+      x = comfort_xcol2; y = comfort_yrow2;
+      it.printf(x, y + 20, id(icon_environment), TextAlign::CENTER_LEFT, "\U000F0502");
+      it.printf(x + 60 , y + 20, id(font_subscript), TextAlign::TOP_CENTER, "°F");
+      if (id(livingroom_temp).has_state()) {
+        it.printf(x + 60, y, id(font_status), TextAlign::TOP_CENTER , "%.0f", id(livingroom_temp).state);
+      } else {
+        it.printf(x + 60, y, id(font_status), TextAlign::TOP_CENTER , "N/A");
+      }
+
+      // Basement Temp
+      x = comfort_xcol2; y = comfort_yrow3;
+      it.printf(x, y + 20, id(icon_environment), TextAlign::CENTER_LEFT, "\U000F12BE");
+      it.printf(x + 60 , y + 20, id(font_subscript), TextAlign::TOP_CENTER, "°F");
+      if (id(basement_temp).has_state()) {
+        it.printf(x + 60, y, id(font_status), TextAlign::TOP_CENTER , "%.0f", id(basement_temp).state);
+      } else {
+        it.printf(x + 60, y, id(font_status), TextAlign::TOP_CENTER , "N/A");
+      }
+      
+      
+      ////////////////////////////////////////
+      // Alarm System 
+      ////////////////////////////////////////
+
+      ESP_LOGI("display", "Alarm system data..");
+      
+      
+      int alarm_xpos = 240;
+      int alarm_ypos = 175;
+      x = alarm_xpos; y = alarm_ypos;
+      
+      it.printf(alarm_xpos, y - 40, id(font_header), TextAlign::TOP_CENTER, "Alarm");
+      if(id(alarm_state).has_state()) {
+        it.printf(x, y + 70, id(font_subscript), TextAlign::TOP_CENTER , "%s", id(alarm_state).state.c_str());
+        it.printf(x, y, id(icon_alarm), TextAlign::TOP_CENTER, alarm_icon_map[id(alarm_state).state.c_str()].c_str());
+      } else {
+        it.printf(x, y + 70, id(font_subscript), TextAlign::TOP_CENTER , "N/A");
+      }
+      
+      
+      ////////////////////////////////////////
+      // Speed Test Data 
+      ////////////////////////////////////////
+
+      ESP_LOGI("display", "Speedtest data..");
+      
+      it.printf(350, 135, id(font_header), TextAlign::TOP_CENTER, "WAN");
+      
+      int wan_yspacing = 35;
+      int wan_xcol = 300;
+      int wan_yrow1 = 155;
+      int wan_yrow2 = wan_yrow1 + wan_yspacing;
+      int wan_yrow3 = wan_yrow2 + wan_yspacing;
+
+      // Speedtest Download
+      x = wan_xcol; y = wan_yrow1;
+      it.printf(x, y + 20, id(icon_speedtest), TextAlign::CENTER_LEFT, "\U000F0B7D");
+      it.printf(x + 60 , y + 20, id(font_subscript), TextAlign::TOP_CENTER, "Mbps");
+      if (id(speedtest_download).has_state()) {
+        it.printf(x + 60, y, id(font_status), TextAlign::TOP_CENTER , "%.1f", id(speedtest_download).state);
+      } else {
+        it.printf(x + 60, y, id(font_status), TextAlign::TOP_CENTER , "N/A");
+      }
+      
+      // Speedtest Upload
+      y = wan_yrow2;
+      it.printf(x, y + 20, id(icon_speedtest), TextAlign::CENTER_LEFT, "\U000F0B7E");
+      it.printf(x + 60 , y + 20, id(font_subscript), TextAlign::TOP_CENTER, "Mbps");
+      if (id(speedtest_upload).has_state()) {
+        it.printf(x + 60, y, id(font_status), TextAlign::TOP_CENTER , "%.1f", id(speedtest_upload).state);
+      } else {
+        it.printf(x + 60, y, id(font_status), TextAlign::TOP_CENTER , "N/A");
+      }
+      
+      // Speedtest Ping
+      y = wan_yrow3;
+      it.printf(x, y + 20, id(icon_speedtest), TextAlign::CENTER_LEFT, "\U000F0152");
+      it.printf(x + 60 , y + 20, id(font_subscript), TextAlign::TOP_CENTER, "ms");
+      if (id(speedtest_ping).has_state()) {
+        it.printf(x + 60, y, id(font_status), TextAlign::TOP_CENTER , "%.0f", id(speedtest_ping).state);
+      } else {
+        it.printf(x + 60, y, id(font_status), TextAlign::TOP_CENTER , "N/A");
+      }
+      
+      
+      ////////////////////////////////////////
+      // Footer Box 
+      ////////////////////////////////////////
+
+      ESP_LOGI("footer", "Drawing footer box..");
+      x = 200; y = 265;
+      it.line(0, y, 400, y);
+      it.line(x, y, x, 300);
+      
+      // Print time in HH:MM format 
+      ESP_LOGI("footer", "Printing last update time..");
+      x = 5;
+      int footerline1y = y;
+      int footerline2y = footerline1y + 17;
+      it.printf(x, footerline1y, id(font_subscript), TextAlign::TOP_LEFT, "Last update:");
+      it.strftime(x, footerline2y, id(font_subscript), TextAlign::TOP_LEFT, "%m/%d/%y %I:%M:%S %p", id(esptime).now());
+      
+      // Wifi Connection Info 
+      ESP_LOGI("wifi", "Printing wifi info..");
+      x = 350;
+      if (id(esp_ssid).has_state()) {
+        it.printf(x, footerline1y, id(font_subscript), TextAlign::TOP_RIGHT , "%s", id(esp_ssid).state.c_str());
+      }
+      if (id(esp_ip_address).has_state()) {
+        it.printf(x, footerline2y, id(font_subscript), TextAlign::TOP_RIGHT , "%s", id(esp_ip_address).state.c_str());
+      }
+      
+      ////////////////////////////////////////
+      // WiFi Signal Strength 
+      ////////////////////////////////////////
+
+      ESP_LOGI("wifi", "Printing wifi icon..");
+      x = 398, y = 298;
+      if(id(wifi_signal_strength).has_state()) {
+        if (id(wifi_signal_strength).state >= -50) {
+            //Excellent
+            it.print(x, y, id(font_wifi), TextAlign::BOTTOM_RIGHT, "\U000F0928");
+            ESP_LOGI("WiFi", "Exellent");
+        } else if (id(wifi_signal_strength).state  >= -60) {
+            //Good
+            it.print(x, y, id(font_wifi), TextAlign::BOTTOM_RIGHT, "\U000F0925");
+            ESP_LOGI("WiFi", "Good");
+        } else if (id(wifi_signal_strength).state  >= -67) {
+            //Fair
+            it.print(x, y, id(font_wifi), TextAlign::BOTTOM_RIGHT, "\U000F0922");
+            ESP_LOGI("WiFi", "Fair");
+        } else if (id(wifi_signal_strength).state  >= -70) {
+            //Weak
+            it.print(x, y, id(font_wifi), TextAlign::BOTTOM_RIGHT, "\U000F091F");
+            ESP_LOGI("WiFi", "Weak");
+        } else {
+            //Unlikely working signal
+            it.print(x, y, id(font_wifi), TextAlign::BOTTOM_RIGHT, "\U000F092B");
+            ESP_LOGI("WiFi", "Unlikely");
+        }
+      } else {
+        //Unlikely working signal
+        it.print(x, y, id(font_wifi), TextAlign::BOTTOM_RIGHT, "\U000F05AA");
+        ESP_LOGI("WiFi", "Not connected");
+      }

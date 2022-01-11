@@ -1,0 +1,6 @@
+- platform: template
+  sensors:
+    alarm_ready_to_arm:
+      friendly_name: Alarm is ready to arm
+      value_template: >
+        {{ state_attr('sensor.home_alarm_keypad', 'ready') }}

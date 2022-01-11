@@ -1,0 +1,30 @@
+# Example configuration.yaml entry
+host: !secret envisalink-host
+panel_type: DSC
+user_name: !secret envisalink-user
+password: !secret envisalink-pw
+#code: !secret envisalink-code
+port: 4025
+evl_version: 4
+keepalive_interval: 60
+zonedump_interval: 0
+timeout: 10
+zones:
+  1:
+    name: "Front Door"
+    type: "opening"
+  2:
+    name: "Garage Door"
+    type: "opening"
+  3:
+    name: "Deck Door"
+    type: "opening"
+  4:
+    name: "Back Door"
+    type: "opening"
+  5:
+    name: "Front Door Motion"
+    type: "motion"
+partitions:
+  1:
+    name: "Home Alarm"

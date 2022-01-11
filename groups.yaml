@@ -1,0 +1,32 @@
+landing_lights:
+  name: Landing Lights
+  entities:
+    - switch.basement_stairs
+    - switch.landing_lights
+
+outside_front:
+  name: Outside Front Lights
+  entities:
+    - switch.over_garage_lights
+    - switch.front_porch_light
+    - switch.front_yard_lamp
+
+outside_backyard:
+  name: Outside Backyard Lights
+  entities:
+    - switch.deck_lights
+
+basement_lights:
+  name: Basement Ceiling Lights
+  entities:
+    - light.basement_rear
+    - light.basement_front
+
+basement_lights_all:
+  name: All Basement Lights
+  entities:
+    - light.basement_rear
+    - light.basement_front
+    - light.basement_entertainment_center
+    - light.lego_shelf
+    - light.basement_office

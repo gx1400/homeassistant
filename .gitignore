@@ -1,13 +1,15 @@
 # WARNING: Make your GitHub repo Private if you are using this as it is
 # Example .gitignore file for your config dir.
 # An * ensures that everything will be ignored.
-#*
+*
 # You can whitelist files/folders with !, these will not be ignored.
 !*.yaml
 !.gitignore
 !*.md
 !*.sh
 !*.js*
+
+*.gz
 
 # Comment these 2 lines if you don't want to include your SSH keys
 #.ssh/
@@ -24,9 +26,11 @@ secrets.yaml
 .storage
 .cloud
 .google.token 
+.vscode/*
 home-assistant.log*
-
 scripts.yaml
-!automations/
-!blueprints/
-!sensors/
+
+!*/
+!esphome/**
+zigbee2mqtt/*
+.cloud/*

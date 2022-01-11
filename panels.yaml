@@ -1,0 +1,19 @@
+- name: server_control
+  sidebar_title: Server Control
+  sidebar_icon: mdi:cog-transfer
+  js_url: /api/hassio/app/entrypoint.js
+  url_path: "config/server_control"
+  embed_iframe: true
+  require_admin: true
+  config:
+    ingress: core_configurator
+
+- name: system_control
+  sidebar_title: System Control
+  sidebar_icon: mdi:database-cog
+  js_url: /api/hassio/app/entrypoint.js
+  url_path: "hassio/system"
+  embed_iframe: true
+  require_admin: true
+  config:
+    ingress: core_configurator

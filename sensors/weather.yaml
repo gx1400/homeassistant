@@ -1,0 +1,43 @@
+- platform: template
+  sensors:
+    weather_forecast_temphi:
+      friendly_name: Forecast Temperature High
+      unit_of_measurement: "°F"
+      value_template: >
+        {{ state_attr('weather.home','forecast')[0].temperature }}
+
+    weather_forecast_templo:
+      friendly_name: Forecast Temperature Low
+      unit_of_measurement: "°F"
+      value_template: >
+        {{ state_attr('weather.home','forecast')[0].templow }}
+
+    weather_forecast_precipitation:
+      friendly_name: Forecast Precipitation
+      unit_of_measurement: "in"
+      value_template: >
+        {{ state_attr('weather.home','forecast')[0].precipitation }}
+
+    weather_forecast_precipitation_probability:
+      friendly_name: Forecast Precipitation Probability
+      unit_of_measurement: "%"
+      value_template: >
+        {{ state_attr('weather.kmkc_daynight','forecast')[0].precipitation_probability }}
+
+    weather_forecast_wind_bearing:
+      friendly_name: Forecast Wind Bearing
+      unit_of_measurement: "°"
+      value_template: >
+        {{ state_attr('weather.home','forecast')[0].wind_bearing }}
+
+    weather_forecast_wind_speed:
+      friendly_name: Forecast Wind Speed
+      unit_of_measurement: "mph"
+      value_template: >
+        {{ state_attr('weather.home','forecast')[0].wind_speed }}
+
+    weather_temp:
+      friendly_name: Current Temp
+      unit_of_measurement: "°F"
+      value_template: >
+        {{ state_attr('weather.kmkc_daynight', 'temperature') }}

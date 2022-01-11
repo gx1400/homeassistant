@@ -1,0 +1,27 @@
+host: localhost
+port: 8086
+database: homeassistant
+username: homeassistant
+password: !secret influxdbpw
+max_retries: 3
+default_measurement: state
+include:
+  entities:
+    - sensor.my_ecobee_humidity
+    - sensor.my_ecobee_temperature
+    - sensor.evergy_kwh_rate
+  entity_globs:
+    - sensor.powerups2_*
+    - sensor.speedtest_*
+    - sensor.nzbget_*
+    - binary_sensor.dsc_zone_*
+    - sensor.*_battery
+    - sensor.*_temperature*
+    - sensor.*_humidity*
+    - sensor.hvac_*
+  domains:
+    - binary_sensor
+    - climate
+    - humidifier
+    - light
+    - weather

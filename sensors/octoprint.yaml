@@ -1,0 +1,6 @@
+- platform: template
+  sensors:
+    octoprint_bed_temp_celsius:
+      friendly_name: "Bed Temperature - Actual"
+      unit_of_measurement: "°C"
+      value_template: "{{ ((states('sensor.octoprint_actual_bed_temp')|float-32)* 5 / 9)|round(1) }}"

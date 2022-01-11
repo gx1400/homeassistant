@@ -1,0 +1,38 @@
+- platform: template
+  sensors:
+    evergy_rate_period:
+      friendly_name: Energy Rate
+      value_template: >
+        {% if ((now().month >6) or (now().month == 5 and now().day >= 16)) and ((now().month < 9) or (now().month == 9 and now().day <= 15))%}
+          Summer Rate
+        {%else%}
+          Winter Rate
+        {%endif%}
+
+    evergy_kwh_rate:
+      friendly_name: Energy Rate
+      unit_of_measurement: "$/kWh"
+      value_template: >
+        {% if ((now().month >6) or (now().month == 5 and now().day >= 16)) and ((now().month < 9) or (now().month == 9 and now().day <= 15))%}
+          0.10494
+        {%else%}
+          0.08101
+        {%endif%}
+  
+    energy_mainconsumption:
+      friendly_name: Main Electrical Panel Consumption
+      unit_of_measurement: "kWh"
+      device_class: energy
+      value_template: >-
+        {% set mainl1 = states('sensor.main_l1_wh_accumulated') | float %}
+        {% set mainl2 = states('sensor.main_l2_wh_accumulated') | float %}
+        {{ ((mainl1 + mainl2) / 1000 | round(1, default=0)) }}
+
+    power_main_wattage:
+      friendly_name: Main Electrical Panel Wattage
+      unit_of_measurement: "W"
+      device_class: power
+      value_template: >-
+        {% set mainl1w = states('sensor.main_l1') | float %}
+        {% set mainl2w = states('sensor.main_l2') | float %}
+        {{ ((mainl1w + mainl2w) | round(1, default=0)) }}
