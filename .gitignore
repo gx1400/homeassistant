@@ -27,3 +27,5 @@ secrets.yaml
 home-assistant.log*
 
 scripts.yaml
+!automations/*
+!blueprints/*
