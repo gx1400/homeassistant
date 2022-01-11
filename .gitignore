@@ -25,3 +25,5 @@ secrets.yaml
 .cloud
 .google.token 
 home-assistant.log*
+
+scripts.yaml
