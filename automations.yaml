@@ -524,3 +524,14 @@
   action:
   - service: script.alarm_disarm
   mode: single
+
+- id: '1642091071563'
+  alias: Motion - Storeroom
+  description: ''
+  use_blueprint:
+    path: apollo1220/motion-activated-entity-optional-lux-sensor-time-of-day-blocking-boolean.yaml
+    input:
+      illuminance_cutoff: 0
+      motion_sensor: binary_sensor.motion_storeroom_motion_detection
+      target_entity: switch.store_room
+      no_motion_wait: 300

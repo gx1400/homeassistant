@@ -21,7 +21,7 @@ tts:
 group: !include groups.yaml
 
 #automation: !include automations.yaml
-automation ui: !include automations/ui/automations.yaml
+automation ui: !include automations.yaml
 automation manual: !include_dir_merge_list automations/manual/
 
 script: !include scripts.yaml
