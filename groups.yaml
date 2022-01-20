@@ -1,3 +1,94 @@
+whole_house_inside:
+  name: Whole House Inside
+  entities:
+    - light.basement_entertainment_center
+    - light.basement_front
+    - light.basement_office_light
+    - light.basement_rear
+    - light.bedroom_lights
+    - light.fan_light
+    - light.lego_lights
+    - light.living_room
+    - fan.bedroom_ceiling_fan
+    - switch.basement_stairs
+    - switch.basement_stairs
+    - switch.bedroom_lamp
+    - switch.deck_lights
+    - switch.front_hallway
+    - switch.garage_lights
+    - switch.kitchen_lights
+    - switch.landing_lights
+    - switch.laundry_room
+    - switch.living_room_lamp
+    - switch.office_lamp
+    - switch.office_radio
+    - switch.scentsy
+    - switch.space_heater
+    - switch.store_room
+    - switch.upstairs_hallway
+    - switch.white_noise_fan
+
+outside_lights:
+  name: Outside Lights
+  entities:
+    - switch.deck_lights
+    - switch.front_porch_light
+    - switch.front_yard_lamp
+    - switch.over_garage_lights
+
+lower_levels_lights:
+  name: Lower Levels Lights
+  entities:
+    - light.basement_entertainment_center
+    - light.basement_front
+    - light.basement_office_light
+    - light.basement_rear
+    - light.lego_lights
+    - light.living_room
+    - switch.basement_stairs
+    - switch.garage_lights
+    - switch.kitchen_lights
+    - switch.landing_lights
+    - switch.laundry_room
+    - switch.store_room
+
+upstairs_lights_except_bedroom:
+  name: Upstairs Lights Except Bedroom
+  entities:
+    - switch.upstairs_hallway
+    - switch.scentsy
+    - switch.office_lamp
+    - switch.office_radio
+    - switch.space_heater
+
+master_bedroom_nighttime_off:
+  name: Master Bedroom Nighttime Off
+  entities:
+    - switch.bedroom_lamp
+    - light.bedroom_lights
+    - light.fan_light
+
+master_bedroom_nighttime_on:
+  name: Master Bedroom Nighttime On
+  entities:
+    - switch.white_noise_fan
+    - fan.bedroom_ceiling_fan
+
+master_bedroom_all_off:
+  name: Master Bedroom All Off
+  entities:
+    - switch.bedroom_lamp
+    - light.bedroom_lights
+    - light.fan_light
+    - switch.white_noise_fan
+    - fan.bedroom_ceiling_fan
+
+basement_lights:
+  name: Basement Light
+  entities:
+    - light.basement_front
+    - light.basement_rear
+
 landing_lights:
   name: Landing Lights
   entities:
@@ -5,28 +96,13 @@ landing_lights:
     - switch.landing_lights
 
 outside_front:
-  name: Outside Front Lights
+  name: Outside Lights - Front
   entities:
-    - switch.over_garage_lights
     - switch.front_porch_light
     - switch.front_yard_lamp
+    - switch.over_garage_lights
 
 outside_backyard:
-  name: Outside Backyard Lights
+  name: Outside Lights - Backyard
   entities:
     - switch.deck_lights
-
-basement_lights:
-  name: Basement Ceiling Lights
-  entities:
-    - light.basement_rear
-    - light.basement_front
-
-basement_lights_all:
-  name: All Basement Lights
-  entities:
-    - light.basement_rear
-    - light.basement_front
-    - light.basement_entertainment_center
-    - light.lego_shelf
-    - light.basement_office

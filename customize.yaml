@@ -1,1 +1,11 @@
+binary_sensor.leak_sump_pump_water:
+  device_class: moisture
 
+binary_sensor.leak_water_heater_alarm:
+  device_class: moisture
+
+binary_sensor.leak_main_water_disconnect_water:
+  device_class: moisture
+
+binary_sensor.leak_garage_sink_water:
+  device_class: moisture
