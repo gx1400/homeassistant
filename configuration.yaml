@@ -43,3 +43,36 @@ envisalink: !include envisalink.yaml
 cover: !include cover.yaml
 
 panel_custom: !include panels.yaml
+
+mqtt:
+  sensor: !include mqtt.yaml
+
+yahoofinance:
+  scan_interval:
+    minutes: 30
+  show_trending_icon: true
+  symbols:
+    - GRMN
+
+binary_sensor:
+  - platform: template
+    sensors:
+      hvac_ac_running:
+        friendly_name: HVAC AC Running
+        value_template: >
+          {{ "compCool1" in state_attr("climate.my_ecobee", "equipment_running") or "compCool2" in state_attr("climate.my_ecobee", "equipment_running")}}
+
+      hvac_furnace_running:
+        friendly_name: HVAC Furnace Running
+        value_template: >
+          {{ "auxHeat1" in state_attr("climate.my_ecobee", "equipment_running") or "auxHeat2" in state_attr("climate.my_ecobee", "equipment_running") }}
+
+      hvac_fan_running:
+        friendly_name: HVAC Fan Running
+        value_template: >
+          {{ "fan" in state_attr("climate.my_ecobee", "equipment_running")}}
+
+      hvac_humidifier_running:
+        friendly_name: HVAC Humidifier Running
+        value_template: >
+          {{ "humidifier" in state_attr("climate.my_ecobee", "equipment_running")}}

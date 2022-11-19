@@ -1,211 +1,208 @@
-- id: "1639092229032"
+- id: '1639092229032'
   alias: Timeout - Lego shelf off - 15 min
-  description: ""
+  description: ''
   trigger:
-    - platform: device
-      type: turned_on
-      device_id: 59db4cb0e56d806f15a870fa151ba9d4
-      entity_id: light.lego_lights
-      domain: light
-      id: trigger_lego_shelf_on_15min
-      for:
-        hours: 0
-        minutes: 15
-        seconds: 0
+  - platform: device
+    type: turned_on
+    device_id: 59db4cb0e56d806f15a870fa151ba9d4
+    entity_id: light.lego_lights
+    domain: light
+    id: trigger_lego_shelf_on_15min
+    for:
+      hours: 0
+      minutes: 15
+      seconds: 0
   condition: []
   action:
-    - type: turn_off
-      device_id: 59db4cb0e56d806f15a870fa151ba9d4
-      entity_id: light.lego_lights
-      domain: light
-    - service: notify.notify
-      data:
-        title: Lego shelf auto off
-        message: Lego shelf was on for more than 15 min
+  - type: turn_off
+    device_id: 59db4cb0e56d806f15a870fa151ba9d4
+    entity_id: light.lego_lights
+    domain: light
+  - service: notify.notify
+    data:
+      title: Lego shelf auto off
+      message: Lego shelf was on for more than 15 min
   mode: single
-- id: "1639093314410"
+- id: '1639093314410'
   alias: Deck lights  - off after dark when door closes
-  description: ""
+  description: ''
   trigger:
-    - platform: state
-      entity_id: binary_sensor.deck_door
-      id: trigger_deck_door_closes
-      from: "on"
-      to: "off"
-    - platform: state
-      entity_id: binary_sensor.back_door
-      id: trigger_back_door_closes
-      from: "on"
-      to: "off"
+  - platform: state
+    entity_id: binary_sensor.deck_door
+    id: trigger_deck_door_closes
+    from: 'on'
+    to: 'off'
+  - platform: state
+    entity_id: binary_sensor.back_door
+    id: trigger_back_door_closes
+    from: 'on'
+    to: 'off'
   condition:
-    - condition: state
-      entity_id: binary_sensor.back_door
-      state: "off"
-    - condition: state
-      entity_id: binary_sensor.deck_door
-      state: "off"
-    - condition: sun
-      after: sunset
+  - condition: state
+    entity_id: binary_sensor.back_door
+    state: 'off'
+  - condition: state
+    entity_id: binary_sensor.deck_door
+    state: 'off'
+  - condition: sun
+    after: sunset
   action:
-    - type: turn_off
-      device_id: fa40ba7ef87914de7e3a560283f974a5
-      entity_id: switch.deck_lights
-      domain: switch
+  - service: homeassistant.turn_off
+    target:
+      entity_id: group.outside_backyard
   mode: single
-- id: "1639093498105"
+- id: '1639093498105'
   alias: Deck lights - on after dark when door opens
-  description: ""
+  description: ''
   trigger:
-    - platform: state
-      entity_id: binary_sensor.deck_door
-      id: trigger_deck_door_opens
-      from: "off"
-      to: "on"
-    - platform: state
-      entity_id: binary_sensor.back_door
-      id: trigger_back_door_opens
-      from: "off"
-      to: "on"
+  - platform: state
+    entity_id: binary_sensor.deck_door
+    id: trigger_deck_door_opens
+    from: 'off'
+    to: 'on'
+  - platform: state
+    entity_id: binary_sensor.back_door
+    id: trigger_back_door_opens
+    from: 'off'
+    to: 'on'
   condition:
-    - condition: sun
-      after: sunset
+  - condition: sun
+    after: sunset
   action:
-    - type: turn_on
-      device_id: fa40ba7ef87914de7e3a560283f974a5
-      entity_id: switch.deck_lights
-      domain: switch
+  - service: homeassistant.turn_on
+    target:
+      entity_id: group.outside_backyard
   mode: single
-- id: "1639094443768"
+- id: '1639094443768'
   alias: Deck lights - on at sunset if back or deck door open
-  description: ""
+  description: ''
   trigger:
-    - platform: sun
-      event: sunset
-      offset: "0"
-      id: trigger_sunset_decklight_on
+  - platform: sun
+    event: sunset
+    offset: '0'
+    id: trigger_sunset_decklight_on
   condition:
-    - condition: or
-      conditions:
-        - condition: state
-          entity_id: binary_sensor.back_door
-          state: "on"
-        - condition: state
-          entity_id: binary_sensor.deck_door
-          state: "on"
+  - condition: or
+    conditions:
+    - condition: state
+      entity_id: binary_sensor.back_door
+      state: 'on'
+    - condition: state
+      entity_id: binary_sensor.deck_door
+      state: 'on'
   action:
-    - type: turn_on
-      device_id: fa40ba7ef87914de7e3a560283f974a5
-      entity_id: switch.deck_lights
-      domain: switch
+  - service: homeassistant.turn_on
+    target:
+      entity_id: group.outside_backyard
   mode: single
-- id: "1639177073497"
+- id: '1639177073497'
   alias: Button - Living Room - Button Actions
-  description: ""
+  description: ''
   use_blueprint:
     path: jerelabs/zwave-js-inovelli-lzw31-sn-red-series-dimmer.yaml
     input:
       config_button: []
       button_a2: []
       button_b2:
-        - service: script.button_living_room_double_press_down_overrides_and_downstairs_lights
+      - service: script.button_living_room_double_press_down_overrides_and_downstairs_lights
       button_a3:
-        - service: script.button_triple_press_up_alarm_disarm
+      - service: script.button_triple_press_up_alarm_disarm
       button_b3:
-        - service: script.button_triple_press_down_alarm_arm_home
+      - service: script.button_triple_press_down_alarm_arm_home
       button_a4: []
       button_a5: []
       button_a_held: []
       button_b4: []
       inovelli_switch: 756c440419b02d1762a0d0619abad912
-- id: "1639180479574"
+- id: '1639180479574'
   alias: Garage Doors - Up indicator on dimmers
-  description: ""
+  description: ''
   trigger:
-    - type: opened
-      platform: device
-      device_id: 3b058fd43dfcb196dcac64cd75ffb95a
-      entity_id: binary_sensor.garage_door_north_is_open
-      domain: binary_sensor
-      id: trigger_north_garage_door_tilt_up
-    - type: opened
-      platform: device
-      device_id: 52b0d76ffe4ce112d947975c372c42ae
-      entity_id: binary_sensor.garage_door_south_is_open
-      domain: binary_sensor
-      id: trigger_south_garage_door_tilt_up
+  - type: opened
+    platform: device
+    device_id: 3b058fd43dfcb196dcac64cd75ffb95a
+    entity_id: binary_sensor.garage_door_north_is_open
+    domain: binary_sensor
+    id: trigger_north_garage_door_tilt_up
+  - type: opened
+    platform: device
+    device_id: 52b0d76ffe4ce112d947975c372c42ae
+    entity_id: binary_sensor.garage_door_south_is_open
+    domain: binary_sensor
+    id: trigger_south_garage_door_tilt_up
   condition: []
   action:
-    - service: script.dimmer_persistent_garage_door_notification
+  - service: script.dimmer_persistent_garage_door_notification
   mode: single
-- id: "1639180732036"
+- id: '1639180732036'
   alias: Garage Doors - Down clears notification on Living room led
-  description: ""
+  description: ''
   trigger:
-    - type: not_opened
-      platform: device
-      device_id: 3b058fd43dfcb196dcac64cd75ffb95a
-      entity_id: binary_sensor.garage_door_north_is_open
-      domain: binary_sensor
-      id: trigger_north_garage_door_tilt_closed
-    - type: not_opened
-      platform: device
-      device_id: 52b0d76ffe4ce112d947975c372c42ae
-      entity_id: binary_sensor.garage_door_south_is_open
-      domain: binary_sensor
-      id: trigger_south_garage_door_tilt_closed
+  - type: not_opened
+    platform: device
+    device_id: 3b058fd43dfcb196dcac64cd75ffb95a
+    entity_id: binary_sensor.garage_door_north_is_open
+    domain: binary_sensor
+    id: trigger_north_garage_door_tilt_closed
+  - type: not_opened
+    platform: device
+    device_id: 52b0d76ffe4ce112d947975c372c42ae
+    entity_id: binary_sensor.garage_door_south_is_open
+    domain: binary_sensor
+    id: trigger_south_garage_door_tilt_closed
   condition:
-    - condition: state
-      entity_id: binary_sensor.garage_door_north_is_open
-      state: "off"
-      for:
-        hours: 0
-        minutes: 0
-        seconds: 0
-    - condition: state
-      entity_id: binary_sensor.garage_door_south_is_open
-      state: "off"
-      for:
-        hours: 0
-        minutes: 0
-        seconds: 0
+  - condition: state
+    entity_id: binary_sensor.garage_door_north_is_open
+    state: 'off'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 0
+  - condition: state
+    entity_id: binary_sensor.garage_door_south_is_open
+    state: 'off'
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 0
   action:
-    - service: script.dimmer_clear_notifications
+  - service: script.dimmer_clear_notifications
   mode: single
-- id: "1639362492728"
+- id: '1639362492728'
   alias: Battery - Low battery level detection & notification for all battery sensors
-  description: ""
+  description: ''
   use_blueprint:
     path: sbyx/low-battery-level-detection-notification-for-all-battery-sensors.yaml
     input:
       actions:
-        - service: notify.persistent_notification
-          data:
-            message: "The following devices have a low battery: {{sensors}}"
-            title: Low battery alert
-        - service: notify.notify
-          data:
-            message: "The following devices have a low battery: {{sensors}}"
-            title: Low battery alert
+      - service: notify.persistent_notification
+        data:
+          message: 'The following devices have a low battery: {{sensors}}'
+          title: Low battery alert
+      - service: notify.notify
+        data:
+          message: 'The following devices have a low battery: {{sensors}}'
+          title: Low battery alert
       threshold: 25
       exclude:
         entity_id: []
         device_id:
-          - 01826229e69fc9871fbec159584a37d4
-          - f118769b7da680163ed25f2630937780
-- id: "1639362848481"
+        - 01826229e69fc9871fbec159584a37d4
+        - f118769b7da680163ed25f2630937780
+- id: '1639362848481'
   alias: Motion - Landing Blueprint
-  description: ""
+  description: ''
   use_blueprint:
     path: apollo1220/motion-activated-entity-optional-lux-sensor-time-of-day-blocking-boolean.yaml
     input:
       illuminance_cutoff: 0
       motion_sensor: binary_sensor.motion_landing_motion_detection
-      target_entity: group.landing_lights
       no_motion_wait: 120
       blocker_entity: input_boolean.motion_override_landing
-- id: "1639363944048"
+      target_entity: switch.landing_lights
+- id: '1639363944048'
   alias: Motion - Laundry Blueprint
-  description: ""
+  description: ''
   use_blueprint:
     path: apollo1220/motion-activated-entity-optional-lux-sensor-time-of-day-blocking-boolean.yaml
     input:
@@ -214,128 +211,128 @@
       target_entity: switch.laundry_room
       no_motion_wait: 120
       blocker_entity: input_boolean.motion_override_laundryroom
-- id: "1641438076912"
-  alias: "Alarm - is disarmed after 8pm notification "
-  description: ""
+- id: '1641438076912'
+  alias: 'Alarm - is disarmed after 8pm notification '
+  description: ''
   trigger:
-    - platform: time
-      at: "20:00:00"
+  - platform: time
+    at: '20:00:00'
   condition: []
   action:
-    - choose:
-        - conditions:
-            - condition: state
-              entity_id: alarm_control_panel.home_alarm
-              state: disarmed
-          sequence:
-            - service: script.dimmer_persistent_nightly_alarm_notification
-      default: []
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: alarm_control_panel.home_alarm
+        state: disarmed
+      sequence:
+      - service: script.dimmer_persistent_nightly_alarm_notification
+    default: []
   mode: single
-- id: "1641499149996"
+- id: '1641499149996'
   alias: Alarm - Armed Home Notification
-  description: ""
+  description: ''
   trigger:
-    - platform: state
-      entity_id: alarm_control_panel.home_alarm
-      from: pending
-      to: armed_home
+  - platform: state
+    entity_id: alarm_control_panel.home_alarm
+    from: pending
+    to: armed_home
   condition: []
   action:
-    - service: notify.notify
-      data:
-        title: Alarm Event!
-        message: Alarm armed into "Stay" Arming
-    - service: script.dimmer_green_2s_fast_flash
+  - service: notify.notify
+    data:
+      title: Alarm Event!
+      message: Alarm armed into "Stay" Arming
+  - service: script.dimmer_green_2s_fast_flash
   mode: single
-- id: "1641499251309"
+- id: '1641499251309'
   alias: Alarm - Disarmed Notification
-  description: ""
+  description: ''
   trigger:
-    - platform: state
-      entity_id: alarm_control_panel.home_alarm
-      from: armed_home
-      to: disarmed
-    - platform: state
-      entity_id: alarm_control_panel.home_alarm
-      from: armed_away
-      to: disarmed
+  - platform: state
+    entity_id: alarm_control_panel.home_alarm
+    from: armed_home
+    to: disarmed
+  - platform: state
+    entity_id: alarm_control_panel.home_alarm
+    from: armed_away
+    to: disarmed
   condition: []
   action:
-    - service: notify.notify
-      data:
-        title: Alarm Event!
-        message: Alarm disarmed
-    - service: script.dimmer_cyan_2s_fast_flash
+  - service: notify.notify
+    data:
+      title: Alarm Event!
+      message: Alarm disarmed
+  - service: script.dimmer_green_2s_fast_flash
   mode: single
-- id: "1641499620266"
+- id: '1641499620266'
   alias: Alarm - Armed Away Notification
-  description: ""
+  description: ''
   trigger:
-    - platform: state
-      entity_id: alarm_control_panel.home_alarm
-      from: pending
-      to: armed_away
+  - platform: state
+    entity_id: alarm_control_panel.home_alarm
+    from: pending
+    to: armed_away
   condition: []
   action:
-    - service: notify.notify
-      data:
-        title: Alarm Arm Successful
-        message: Alarm armed into "Away" Arming
-    - service: script.dimmer_green_2s_fast_flash
+  - service: notify.notify
+    data:
+      title: Alarm Arm Successful
+      message: Alarm armed into "Away" Arming
+  - service: script.dimmer_green_2s_fast_flash
   mode: single
-- id: "1641499755517"
+- id: '1641499755517'
   alias: Alarm - Arm Pending Notification
-  description: ""
+  description: ''
   trigger:
-    - platform: state
-      entity_id: alarm_control_panel.home_alarm
-      to: pending
-      from: disarmed
+  - platform: state
+    entity_id: alarm_control_panel.home_alarm
+    to: pending
+    from: disarmed
   condition: []
   action:
-    - service: script.dimmer_yellow_5s_fast_flash
+  - service: script.dimmer_yellow_5s_fast_flash
   mode: single
-- id: "1641505677716"
+- id: '1641505677716'
   alias: Alarm - Arm at Midnight
-  description: ""
+  description: ''
   trigger:
-    - platform: time
-      at: 00:01:00
-      id: trigger_alarm_midnight_arm
+  - platform: time
+    at: 00:01:00
+    id: trigger_alarm_midnight_arm
   condition:
-    - condition: time
-      weekday:
-        - mon
-        - tue
-        - wed
-        - thu
-        - fri
-    - condition: state
-      entity_id: alarm_control_panel.home_alarm
-      state: disarmed
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+  - condition: state
+    entity_id: alarm_control_panel.home_alarm
+    state: disarmed
   action:
-    - service: script.night_alarm_arming
+  - service: script.alarm_stay_arming
   mode: single
-- id: "1641505789586"
+- id: '1641505789586'
   alias: Alarm - Auto Disarm at 7:15a from Stay Arm
-  description: ""
+  description: ''
   trigger:
-    - platform: time
-      at: 07:15:00
-      id: trigger_alarm_auto_disarm
+  - platform: time
+    at: 07:15:00
+    id: trigger_alarm_auto_disarm
   condition:
-    - condition: state
-      entity_id: alarm_control_panel.home_alarm
-      state: armed_home
-    - condition: state
-      entity_id: input_boolean.alarm_auto_disarm_override
-      state: "false"
+  - condition: state
+    entity_id: alarm_control_panel.home_alarm
+    state: armed_home
+  - condition: state
+    entity_id: input_boolean.alarm_auto_disarm_override
+    state: 'false'
   action:
-    - service: script.alarm_disarm
+  - service: script.alarm_disarm
   mode: single
-- id: "1642091071563"
+- id: '1642091071563'
   alias: Motion - Storeroom
-  description: ""
+  description: ''
   use_blueprint:
     path: apollo1220/motion-activated-entity-optional-lux-sensor-time-of-day-blocking-boolean.yaml
     input:
@@ -343,19 +340,19 @@
       motion_sensor: binary_sensor.motion_storeroom_motion_detection
       target_entity: switch.store_room
       no_motion_wait: 300
-- id: "1642092160085"
+- id: '1642092160085'
   alias: Motion - Garage
-  description: ""
+  description: ''
   use_blueprint:
     path: apollo1220/motion-activated-entity-optional-lux-sensor-time-of-day-blocking-boolean.yaml
     input:
       illuminance_cutoff: 0
       motion_sensor: binary_sensor.motion_garage_motion_detection
-      target_entity: group.basement_lights
       no_motion_wait: 300
-- id: "1642092284830"
+      target_entity: switch.garage_lights
+- id: '1642092284830'
   alias: Motion - Basement Office
-  description: ""
+  description: ''
   use_blueprint:
     path: apollo1220/motion-activated-entity-optional-lux-sensor-time-of-day-blocking-boolean.yaml
     input:
@@ -364,87 +361,128 @@
       target_entity: light.basement_office_light
       no_motion_wait: 900
       blocker_entity: input_boolean.motion_override_basement
-- id: "1642092624633"
+- id: '1642092624633'
   alias: Motion - Basement Lights
-  description: ""
+  description: ''
   use_blueprint:
     path: apollo1220/motion-activated-entity-optional-lux-sensor-time-of-day-blocking-boolean.yaml
     input:
       illuminance_cutoff: 0
       motion_sensor: binary_sensor.motion_lego_shelf_motion_detection
-      no_motion_wait: 900
+      no_motion_wait: 7200
       blocker_entity: input_boolean.motion_override_basement
       target_entity: group.basement_lights
-- id: "1642092691130"
+- id: '1642092691130'
   alias: Overrides - Morning Reset
-  description: ""
+  description: ''
   trigger:
-    - platform: time
-      at: 06:00:00
-      id: trigger_override_morning_reset
+  - platform: time
+    at: 06:00:00
+    id: trigger_override_morning_reset
   condition: []
   action:
-    - service: script.overrides_clear_overrides
+  - service: script.overrides_clear_overrides
   mode: single
-- id: "1642094286098"
+- id: '1642094286098'
   alias: Alarm - Set Motion Overrides when alarm is armed
-  description: ""
+  description: ''
   trigger:
-    - platform: state
-      entity_id: alarm_control_panel.home_alarm
-      from: pending
-      to: armed_home
+  - platform: state
+    entity_id: alarm_control_panel.home_alarm
+    from: pending
+    to: armed_home
   condition: []
   action:
-    - service: script.override_set_overrides
+  - service: script.override_set_overrides
   mode: single
-- id: "1642215752011"
+- id: '1642215752011'
   alias: Water - Leak alert for any moisture sensors
-  description: ""
+  description: ''
   trigger:
-    - event_data: {}
-      event_type: state_changed
-      platform: event
+  - event_data: {}
+    event_type: state_changed
+    platform: event
   condition:
-    - condition: template
-      value_template:
-        '{{ trigger.event.data.new_state.attributes.device_class == "moisture"
-        }}'
-    - condition: template
-      value_template: '{{ trigger.event.data.new_state.state == "on" }}'
+  - condition: template
+    value_template: '{{ trigger.event.data.new_state.attributes.device_class == "moisture"
+      }}'
+  - condition: template
+    value_template: '{{ trigger.event.data.new_state.state == "on" }}'
   action:
-    - service: notify.persistent_notification
-      data:
-        message:
-          "{{ trigger.event.data.new_state.attributes.friendly_name }} has detected
-          a leak."
-        title: Leak detected
-    - service: notify.notify
-      data:
-        message:
-          "{{ trigger.event.data.new_state.attributes.friendly_name }} has detected
-          a leak."
-        title: Leak detected
+  - service: notify.persistent_notification
+    data:
+      message: '{{ trigger.event.data.new_state.attributes.friendly_name }} has detected
+        a leak.'
+      title: Leak detected
+  - service: notify.notify
+    data:
+      message: '{{ trigger.event.data.new_state.attributes.friendly_name }} has detected
+        a leak.'
+      title: Leak detected
   mode: single
-- id: "1642307548046"
+- id: '1642307548046'
   alias: Button - Bedroom Lights - Button Actions
-  description: ""
+  description: ''
   use_blueprint:
     path: jerelabs/zwave-js-inovelli-lzw31-sn-red-series-dimmer.yaml
     input:
       inovelli_switch: 3cefb09e04676c1c4f9e4454818f50c1
       button_b2:
-        - service: script.button_bedroom_double_press_down_house_lights_delay_bedroom
+      - service: script.button_bedroom_double_press_down_house_lights_delay_bedroom
       button_a3:
-        - service: script.button_bedroom_triple_press_up
+      - service: script.button_bedroom_triple_press_up
       button_b3:
-        - service: script.button_bedroom_triple_press_down_night_arming
-- id: "1642542498834"
+      - service: script.button_bedroom_triple_press_down_night_arming
+- id: '1642542498834'
   alias: Button - Bedroom Fan Light - Button Actions
-  description: ""
+  description: ''
   use_blueprint:
     path: jerelabs/zwave-js-inovelli-lzw31-sn-red-series-dimmer.yaml
     input:
       inovelli_switch: 2f5b4579588a42c08cc9ffa217df2e4a
       button_b2:
-        - service: script.button_bedroom_ceiling_fan_light_double_press_down_turn_off_room
+      - service: script.button_bedroom_ceiling_fan_light_double_press_down_turn_off_room
+- id: '1643598078175'
+  alias: Zigbee - Hue lamp
+  description: ''
+  use_blueprint:
+    path: EPMatt/light.yaml
+    input:
+      light_color_mode: Color Temperature
+      controller_device: b930c47e5afc47ee3a2aceaee0a1a664
+      controller_entity: sensor.ikea_button_action
+      controller_model: IKEA E1524/E1810 TRÅDFRI Wireless 5-Button Remote
+      light: light.hue_reading_lamp
+- id: '1667955603492'
+  alias: Sump Pump High Level Switch Triggered
+  description: ''
+  trigger:
+  - platform: device
+    type: turned_on
+    device_id: a8c0f2afa69014233718e050f71fe049
+    entity_id: switch.sump_pump_high_level
+    domain: switch
+  condition: []
+  action:
+  - service: notify.notify
+    data:
+      message: Sump Pump High Level Float Switch Triggered
+  - service: notify.persistent_notification
+    data:
+      message: Sump Pump High Level Float Switch Triggered
+  mode: single
+- id: '1667955665457'
+  alias: Sump Pump High Level Float Switch Cleared
+  description: ''
+  trigger:
+  - platform: device
+    type: turned_off
+    device_id: a8c0f2afa69014233718e050f71fe049
+    entity_id: switch.sump_pump_high_level
+    domain: switch
+  condition: []
+  action:
+  - service: notify.notify
+    data:
+      message: Cleared! Sump Pump High Level Float Switch
+  mode: single

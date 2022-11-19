@@ -1,74 +1,74 @@
 - platform: generic
-  stream_source: !secret lorex-rtsp-frontporch
-  still_image_url: !secret lorex-img-frontporch
+  stream_source: !secret dvr-frontporch
+  still_image_url: !secret dvr-img-frontporch
   name: "Camera Front Porch"
   verify_ssl: false
   authentication: basic
-  username: !secret lorex-dvr-user
-  password: !secret lorex-dvr-password
+  username: !secret dvr-user
+  password: !secret dvr-password
 
 - platform: generic
-  stream_source: !secret lorex-rtsp-garage
-  still_image_url: !secret lorex-img-garage
+  stream_source: !secret dvr-garage
+  still_image_url: !secret dvr-img-garage
   name: "Camera Garage"
   verify_ssl: false
   authentication: basic
-  username: !secret lorex-dvr-user
-  password: !secret lorex-dvr-password
+  username: !secret dvr-user
+  password: !secret dvr-password
 
 - platform: generic
-  stream_source: !secret lorex-rtsp-frontyard
-  still_image_url: !secret lorex-img-frontyard
+  stream_source: !secret dvr-frontyard
+  still_image_url: !secret dvr-img-frontyard
   name: "Camera Front Yard"
   verify_ssl: false
   authentication: basic
-  username: !secret lorex-dvr-user
-  password: !secret lorex-dvr-password
+  username: !secret dvr-user
+  password: !secret dvr-password
 
 - platform: generic
-  stream_source: !secret lorex-rtsp-driveway
-  still_image_url: !secret lorex-img-driveway
+  stream_source: !secret dvr-driveway
+  still_image_url: !secret dvr-img-driveway
   name: "Camera Driveway"
   verify_ssl: false
   authentication: basic
-  username: !secret lorex-dvr-user
-  password: !secret lorex-dvr-password
+  username: !secret dvr-user
+  password: !secret dvr-password
 
 - platform: generic
-  stream_source: !secret lorex-rtsp-northbackyard
-  still_image_url: !secret lorex-img-northbackyard
+  stream_source: !secret dvr-northbackyard
+  still_image_url: !secret dvr-img-northbackyard
   name: "Camera North Backyard"
   verify_ssl: false
   authentication: basic
-  username: !secret lorex-dvr-user
-  password: !secret lorex-dvr-password
+  username: !secret dvr-user
+  password: !secret dvr-password
 
 - platform: generic
-  stream_source: !secret lorex-rtsp-southbackyard
-  still_image_url: !secret lorex-img-southbackyard
+  stream_source: !secret dvr-southbackyard
+  still_image_url: !secret dvr-img-southbackyard
   name: "Camera South Backyard"
   verify_ssl: false
   authentication: basic
-  username: !secret lorex-dvr-user
-  password: !secret lorex-dvr-password
+  username: !secret dvr-user
+  password: !secret dvr-password
 
 - platform: generic
-  stream_source: !secret lorex-rtsp-backdeck
-  still_image_url: !secret lorex-img-backdeck
+  stream_source: !secret dvr-backdeck
+  still_image_url: !secret dvr-img-backdeck
   name: "Camera Back Deck"
   verify_ssl: false
   authentication: basic
-  username: !secret lorex-dvr-user
-  password: !secret lorex-dvr-password
+  username: !secret dvr-user
+  password: !secret dvr-password
 
 - platform: generic
-  stream_source: !secret lorex-rtsp-backdoor
-  still_image_url: !secret lorex-img-backdoor
+  stream_source: !secret dvr-backdoor
+  still_image_url: !secret dvr-img-backdoor
   name: "Camera Back Door"
   verify_ssl: false
   authentication: basic
-  username: !secret lorex-dvr-user
-  password: !secret lorex-dvr-password
+  username: !secret dvr-user
+  password: !secret dvr-password
 
 - platform: mjpeg
   name: OctoPrint

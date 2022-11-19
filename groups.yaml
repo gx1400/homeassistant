@@ -35,6 +35,7 @@ outside_lights:
     - switch.front_porch_light
     - switch.front_yard_lamp
     - switch.over_garage_lights
+    - switch.back_door_light
 
 lower_levels_lights:
   name: Lower Levels Lights
@@ -45,6 +46,7 @@ lower_levels_lights:
     - light.basement_rear
     - light.lego_lights
     - light.living_room
+    - light.front_room_lights
     - switch.basement_stairs
     - switch.garage_lights
     - switch.kitchen_lights
@@ -106,3 +108,4 @@ outside_backyard:
   name: Outside Lights - Backyard
   entities:
     - switch.deck_lights
+    - switch.back_door_light
